@@ -3,7 +3,7 @@ import re
 nomeRegex = {
     "inicio":[r"^🏫IFSULDEMINAS$",r"^(?:🏫|$)(?:I|$)(?:F|$)(?:S|$)(?:U|$)(?:L|$)(?:D|$)(?:E|$)(?:M|$)(?:I|$)(?:N|$)(?:A|$)(?:S|$)$"],
     "fim":[r"^🏫$",r"^🏫$"],
-    "var":[r"^[a-z]+[a-z_0-9]*$",r"^[a-z]+[a-z_0-9]*$"],
+    "var":[r"^[a-z]+[a-z_0-9]*$",r"^([a-z]|$)+([a-z_0-9]|$)*$"],
     "tipoVar":[r"^(int|real|string|bool)$",r"^(((i|$)(n|$)(t|$))|((r|$)(e|$)(a|$)(l|$))|((s|$)(t|$)(r|$)(i|$)(n|$)(g|$))|((b|$)(o|$)(o|$)(l|$)))$"],
     "opRela":[r"^(🐘|🐁|🐘🟰|🐁🟰|🟰🟰|❗🟰)$",r"^(🐘|🐁|🐘🟰|🐁🟰|🟰🟰|❗🟰)$"],
     "opMat":[r"^✖️|➖|➗|➕$",r"^✖️|➖|➗|➕$"],
@@ -28,8 +28,10 @@ nomeRegex = {
 }
 
 def printaSaida(saida):
+    global saida2
     for i in saida:
         print("Token:<",i[0],",",i[1],"> Linha: ",i[2]," - Coluna ",i[3]," -")
+        saida2+="Token:"+i[0]+","+i[1]+" Linha: "+str(i[2])+" - Coluna "+str(i[3])+" <br/>"
 
 
 def testa(texto):
@@ -91,45 +93,62 @@ def validaTudo(fm,pm):
     #asd = input()
     return
 
-macumba = "🏫IFSULDEMINAS \n\
+
+def lexer(macumba):
+
+    global saida
+    global saida2
+    global buffer
+    global previousMatch
+    global currentError
+    global linha
+    global char
+
+    saida = []
+    saida2 = ""
+    buffer = ""
+    previousMatch = []
+    currentError = ""
+    linha = 0
+    char = 0
+
+    for i in range(len(macumba)):
+        char+=1
+        #print(buffer)
+        buffer=buffer+macumba[i]
+        if(buffer == "\n"):
+            linha+=1
+            char=0
+            buffer = ""
+            continue
+        if(buffer == " "):
+            buffer = ""
+            continue
+        fm,pm = testa(buffer)
+        print(linha," ",char)
+        #print('main')
+        validaTudo(fm,pm)
+
+    if(buffer!=""):
+        fm,pm = testa(buffer)
+        
+        print('macumba fim')
+        validaTudo(fm,pm)
+    
+    if(buffer!=""):
+        saida.append([buffer,'erro',linha,char])
+
+    print(saida)
+    printaSaida(saida)
+    return saida2
+
+entrada = "🏫IFSULDEMINAS \n\
 int idade 🟰 ❔➡️\"Insira sua idade\"⬅️ \n\
 🔛➡️idade🐘🟰18⬅️➡️ \n\
 🎤➡️\"Maior de idade\"⬅️ \n\
 ⬅️🔚➡️ \n\
 🎤➡️\"Menor de idade\"⬅️ \n\
 ⬅️ \n\
-🏫 \n"
+🏫 2.a3 \n"
 
-
-saida = []
-buffer = ""
-previousMatch = []
-currentError = ""
-linha = 0
-char = 0
-
-for i in range(len(macumba)):
-    char+=1
-    #print(buffer)
-    buffer=buffer+macumba[i]
-    if(buffer == "\n"):
-        linha+=1
-        char=0
-        buffer = ""
-        continue
-    if(buffer == " "):
-        buffer = ""
-        continue
-    fm,pm = testa(buffer)
-    print(linha," ",char)
-    #print('main')
-    validaTudo(fm,pm)
-
-if(buffer!=""):
-    fm,pm = testa(buffer)
-    
-    print('macumba fim')
-    validaTudo(fm,pm)
-
-print(saida)
-printaSaida(saida)
+lexer(entrada)

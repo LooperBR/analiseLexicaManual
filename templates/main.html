@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <form action="">
+        <textarea name="input" id="input" cols="100" rows="30"></textarea>
+        <a href=# id=test><button class='btn btn-default'>Test</button></a>
+    </form>
+
+    <p id="resultado"></p>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type=text/javascript>
+            $(function() {
+            $('a#test').on('click', function(e) {
+                e.preventDefault()
+                console.log($('#input').val())
+                $.ajax({
+                data : {
+                    text : $('#input').val(),
+                },
+                type : 'POST',
+                url : '/lexShit'
+                })
+                .done(function(data){
+                    const myElement = document.getElementById("resultado");
+                    myElement.innerHTML = data;
+                    console.log(data)
+                });
+                e.preventDefault();
+            
+            });
+            });
+    </script>
+</body>
+</html>
