@@ -46,11 +46,12 @@ def testa(texto):
         m = re.search(y[1], texto)
         if m != None:
             possibleMatch.append(m)
-        #print('function')
-        #print(texto)
-        #print(x)
-        #print(re.search(y[0], texto))
-        #print(re.search(y[1], texto))
+        print('function')
+        print(texto)
+        print(len(texto))
+        print(x)
+        print(re.search(y[0], texto))
+        print(re.search(y[1], texto))
     
     return fullMatch,possibleMatch
 
@@ -90,7 +91,8 @@ def validaTudo(fm,pm):
         for x in fm:
             previousMatch.append(x)
         #print(previousMatch)
-    #asd = input()
+    # if len(saida)>=40:
+    #    asd = input()
     return
 
 
@@ -128,7 +130,7 @@ def lexer(macumba):
             buffer = ""
             continue
         fm,pm = testa(buffer)
-        print(linha," ",char)
+        #print(linha," ",char)
         #print('main')
         validaTudo(fm,pm)
 
@@ -145,13 +147,37 @@ def lexer(macumba):
     printaSaida(saida)
     return saida2
 
-entrada = "🏫IFSULDEMINAS \n\
-int idade 🟰 ❔➡️\"Insira sua idade\"⬅️ \n\
+entrada = '🏫IFSULDEMINAS \n\
+int  inteiro🟰 1 \n\
+real realeiro🟰 1.1 \n\
+string stringeiro🟰 "teste" \n\
+bool booleiro🟰 ✅ \n\
+bool booleiro2🟰 ❗ \n\
+int idade 🟰 ❔➡️"Insira sua idade"⬅️ \n\
+🐘 \n\
+🐁 \n\
+🐘🟰 \n\
+🐁🟰 \n\
+🟰🟰 \n\
+❗🟰 \n\
+✖️ \n\
+➖ \n\
+➗ \n\
+➕ \n\
+✌️ \n\
+🤞 \n\
+🔚🔛 \n\
+🔄 \n\
+🌍 asd \n\
+#️⃣ asd #️⃣ \n\
+⏬ \n\
+❌ \n\
 🔛➡️idade🐘🟰18⬅️➡️ \n\
-🎤➡️\"Maior de idade\"⬅️ \n\
+	🎤➡️"Maior de idade"⬅️ \n\
 ⬅️🔚➡️ \n\
-🎤➡️\"Menor de idade\"⬅️ \n\
+	🎤➡️"Menor de idade"⬅️ \n\
 ⬅️ \n\
-🏫 2.a3 \n"
+🏫 \n\
+'
 
 lexer(entrada)
